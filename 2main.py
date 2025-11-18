@@ -11,5 +11,5 @@ with open('past.csv', 'r', encoding='utf-8') as f:
 
 data.sort(key=lambda x: (x[0], x[1]))
 
-result = [name for year, name in data]
-print(' '.join(result))
+for year, name in data:
+    print(name)
