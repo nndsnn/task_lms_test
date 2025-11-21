@@ -1,15 +1,14 @@
-import csv
+import sqlite3
 
-substring = input().strip().lower()
+input_sector = input()
+input_usefulnes = int(input())
 
-with open('past.csv', 'r', encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    data = []
-    for row in reader:
-        if substring in row['character'].lower():
-            data.append((int(row['year']), row['name']))
+conn = sqlite3.connect("travellers.db")
 
-data.sort(key=lambda x: (x[0], x[1]))
+cur = conn.cursor()
 
-for year, name in data:
-    print(name)
+result = cur.execute("""select Gifts.gift, Gifts.received
+                    from Gifts
+                    INNER JOIN sectors ON Gifts.sector_id = sectors.id
+                    where sectors.sector = ? and Gifts.usefulnes = ?
+                    ORDER BY Gifts.year, Gifts.gift """).fetchall()
